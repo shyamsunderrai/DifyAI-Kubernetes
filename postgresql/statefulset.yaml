@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: difyai
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  serviceName: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: 'docker.m.daocloud.io/postgres:15-alpine'
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: difyai-config
+          ports:
+            - name: postgres-port
+              protocol: TCP
+              containerPort: 5432
+              servicePort: 5432
+          resources:
+            limits:
+              cpu: 100m
+              memory: 300Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          livenessProbe:
+            exec:
+              command: [ "pg_isready" ]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 10
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: db-data
+              subPath: dify/volumes/db/data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: difyai-k8s
