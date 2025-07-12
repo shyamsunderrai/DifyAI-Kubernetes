@@ -87,7 +87,10 @@ This project provides a complete Kubernetes deployment for [Dify](https://github
 ### 3. **Create ConfigMaps:**
 
    ```bash
-   kubectl create -f configmap/difyai-configmap.yaml -f configmap/nginx-configmap-0.yaml -f configmap/nginx-configmap-1.yaml -f configmap/nginx-configmap-2.yaml -f configmap/nginx-configmap-3.yaml -f configmap/nginx-configmap-4.yaml -f configmap/nginx-configmap-5.yaml -f configmap/sandbox-configmap-0.yaml -f configmap/sandbox-configmap-1.yaml -f configmap/ssrf-proxy-configmap-0.yaml -f configmap/ssrf-proxy-configmap-1.yaml
+   kubectl create -f configmap/difyai-configmap.yaml
+   kubectl create -f configmap/nginx-configmap-0.yaml -f configmap/nginx-configmap-1.yaml -f configmap/nginx-configmap-2.yaml -f configmap/nginx-configmap-3.yaml -f configmap/nginx-configmap-4.yaml -f configmap/nginx-configmap-5.yaml
+   kubectl create -f configmap/sandbox-configmap-0.yaml -f configmap/sandbox-configmap-1.yaml
+   kubectl create -f configmap/ssrf-proxy-configmap-0.yaml -f configmap/ssrf-proxy-configmap-1.yaml
    ```
 
 ### 4. Create Core Services:
@@ -95,19 +98,19 @@ This project provides a complete Kubernetes deployment for [Dify](https://github
 * **PostgreSQL**
 
   ```bash
-  kubectl create -f postgresql/service.yaml -f postgresql/statefulset.yaml
+  kubectl create -f postgresql/statefulset.yaml -f postgresql/service.yaml
   ```
 
 * **Redis**
 
   ```bash
-  kubectl create -f redis/service.yaml -f redis/statefulset.yaml
+  kubectl create -f redis/statefulset.yaml -f redis/service.yaml
   ```
 
 * **Weaviate**
 
   ```bash
-  kubectl create -f weaviate/service.yaml -f weaviate/statefulset.yaml
+  kubectl create -f weaviate/statefulset.yaml -f weaviate/service.yaml
   ```
 
 ### 5. Create Dify Components:
@@ -132,7 +135,7 @@ This project provides a complete Kubernetes deployment for [Dify](https://github
 * **API**
 
   ```bash
-  kubectl create -f api/service.yaml -f api/statefulset.yaml
+  kubectl create -f api/statefulset.yaml -f api/service.yaml
   ```
 
 * **Web UI**
@@ -144,7 +147,7 @@ This project provides a complete Kubernetes deployment for [Dify](https://github
 * **Worker**
 
   ```bash
-  kubectl create -f worker/service.yaml -f worker/statefulset.yaml
+  kubectl create -f worker/statefulset.yaml -f worker/service.yaml
   ```
 
 * **Nginx**
