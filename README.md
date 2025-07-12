@@ -56,8 +56,6 @@ This project provides a complete Kubernetes deployment for [Dify](https://github
     └── statefulset.yaml
 ```
 
-Total: **13 directories, 36 files**
-
 ## 🚀 Features
 
 * Full deployment of Dify backend components on Kubernetes
@@ -114,6 +112,23 @@ Total: **13 directories, 36 files**
 
 ### 5. Create Dify Components:
 
+* **Plugin Daemon**
+
+  ```bash
+  kubectl create -f plugin-daemon/deployment.yaml -f plugin-daemon/service.yaml
+  ```
+
+* **Sandbox**
+
+  ```bash
+  kubectl create -f sandbox/deployment.yaml -f sandbox/service.yaml
+  ```
+
+* **SSRF Proxy**
+
+  ```bash
+  kubectl create -f ssrf-proxy/deployment.yaml -f ssrf-proxy/service.yaml
+  ```
 * **API**
 
   ```bash
@@ -132,28 +147,10 @@ Total: **13 directories, 36 files**
   kubectl create -f worker/service.yaml -f worker/statefulset.yaml
   ```
 
-* **Plugin Daemon**
-
-  ```bash
-  kubectl create -f plugin-daemon/deployment.yaml -f plugin-daemon/service.yaml
-  ```
-
 * **Nginx**
 
   ```bash
   kubectl create -f nginx/deployment.yaml -f nginx/service.yaml
-  ```
-
-* **Sandbox**
-
-  ```bash
-  kubectl create -f sandbox/deployment.yaml -f sandbox/service.yaml
-  ```
-
-* **SSRF Proxy**
-
-  ```bash
-  kubectl create -f ssrf-proxy/deployment.yaml -f ssrf-proxy/service.yaml
   ```
 
 ## 📌 Notes
