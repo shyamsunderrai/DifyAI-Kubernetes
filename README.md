@@ -74,17 +74,22 @@ This project provides a complete Kubernetes deployment for [Dify](https://github
 ### 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/your-org/DifyAI-Kubernetes.git
+   git clone https://github.com/Zhoneym/DifyAI-Kubernetes.git
    cd DifyAI-Kubernetes
    ```
+### 2. **Create a Project**
 
-### 2. **Create Persistent Volume Claims:**
+   ```bash
+   kubectl create namespace difyai
+   ```
+
+### 3. **Create Persistent Volume Claims:**
 
    ```bash
    kubectl create -f persistentvolumeclaim/difyai.yaml
    ```
 
-### 3. **Create ConfigMaps:**
+### 4. **Create ConfigMaps:**
 
    ```bash
    kubectl create -f configmap/difyai-configmap.yaml
@@ -93,7 +98,7 @@ This project provides a complete Kubernetes deployment for [Dify](https://github
    kubectl create -f configmap/ssrf-proxy-configmap-0.yaml -f configmap/ssrf-proxy-configmap-1.yaml
    ```
 
-### 4. Create Core Services:
+### 5. Create Core Services:
 
 * **PostgreSQL**
 
@@ -113,7 +118,7 @@ This project provides a complete Kubernetes deployment for [Dify](https://github
   kubectl create -f weaviate/statefulset.yaml -f weaviate/service.yaml
   ```
 
-### 5. Create Dify Components:
+### 6. Create Dify Components:
 
 * **Plugin Daemon**
 
