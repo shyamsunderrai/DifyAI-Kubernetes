@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  python-requirements.txt: ""
+kind: ConfigMap
+metadata:
+  name: sandbox-configmap-0
+  namespace: difyai
