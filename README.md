@@ -106,6 +106,8 @@ This project provides a complete Kubernetes deployment for [Dify](https://github
   kubectl create -f postgresql/statefulset.yaml -f postgresql/service.yaml
   ```
 
+ > **⚠️ Note:** You must initialize the database before proceeding with the deployment.
+
 * **Redis**
 
   ```bash
