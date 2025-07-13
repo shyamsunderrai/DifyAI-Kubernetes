@@ -24,7 +24,6 @@ spec:
             - name: postgres-port
               protocol: TCP
               containerPort: 5432
-              servicePort: 5432
           resources:
             limits:
               cpu: 100m
