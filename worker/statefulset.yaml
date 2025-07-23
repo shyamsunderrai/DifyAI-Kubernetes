@@ -20,7 +20,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: worker
-          image: 'docker.m.daocloud.io/langgenius/dify-api:1.6.0'
+          image: 'docker.m.daocloud.io/langgenius/dify-api:1.7.0'
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5001
