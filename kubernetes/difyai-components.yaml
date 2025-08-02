@@ -1,0 +1,892 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plugin-daemon
+  namespace: difyai
+  labels:
+    app: plugin-daemon
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: plugin-daemon
+  template:
+    metadata:
+      labels:
+        app: plugin-daemon
+    spec:
+      containers:
+        - name: plugin-daemon
+          image: 'docker.m.daocloud.io/langgenius/dify-plugin-daemon:0.2.0-local'
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: difyai-config
+          env:
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: DB_PLUGIN_DATABASE
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_DAEMON_PORT
+            - name: SERVER_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_DAEMON_KEY
+            - name: MAX_PLUGIN_PACKAGE_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_MAX_PACKAGE_SIZE
+            - name: PPROF_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_PPROF_ENABLED
+            - name: DIFY_INNER_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_DIFY_INNER_API_URL
+            - name: DIFY_INNER_API_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_DIFY_INNER_API_KEY
+            - name: PLUGIN_REMOTE_INSTALLING_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_DEBUGGING_HOST
+            - name: PLUGIN_REMOTE_INSTALLING_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_DEBUGGING_PORT
+            - name: PLUGIN_WORKING_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_WORKING_PATH
+            - name: FORCE_VERIFYING_SIGNATURE
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: FORCE_VERIFYING_SIGNATURE
+            - name: PYTHON_ENV_INIT_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_PYTHON_ENV_INIT_TIMEOUT
+            - name: PLUGIN_MAX_EXECUTION_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_MAX_EXECUTION_TIMEOUT
+            - name: PIP_MIRROR_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PIP_MIRROR_URL
+            - name: PLUGIN_STORAGE_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_STORAGE_TYPE
+            - name: PLUGIN_STORAGE_LOCAL_ROOT
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_STORAGE_LOCAL_ROOT
+            - name: PLUGIN_INSTALLED_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_INSTALLED_PATH
+            - name: PLUGIN_PACKAGE_CACHE_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_PACKAGE_CACHE_PATH
+            - name: PLUGIN_MEDIA_CACHE_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_MEDIA_CACHE_PATH
+            - name: PLUGIN_STORAGE_OSS_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_STORAGE_OSS_BUCKET
+            - name: S3_USE_AWS_MANAGED_IAM
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_S3_USE_AWS_MANAGED_IAM
+            - name: S3_USE_AWS
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_S3_USE_AWS
+            - name: S3_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_S3_ENDPOINT
+            - name: S3_USE_PATH_STYLE
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_S3_USE_PATH_STYLE
+            - name: AWS_ACCESS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_AWS_ACCESS_KEY
+            - name: AWS_SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_AWS_SECRET_KEY
+            - name: PAWS_SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_AWS_SECRET_KEY
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_AWS_REGION
+            - name: AZURE_BLOB_STORAGE_CONNECTION_STRING
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_AZURE_BLOB_STORAGE_CONNECTION_STRING
+            - name: AZURE_BLOB_STORAGE_CONTAINER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_AZURE_BLOB_STORAGE_CONTAINER_NAME
+            - name: TENCENT_COS_SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_TENCENT_COS_SECRET_KEY
+            - name: TENCENT_COS_SECRET_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_TENCENT_COS_SECRET_ID
+            - name: TENCENT_COS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_TENCENT_COS_REGION
+            - name: ALIYUN_OSS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_ALIYUN_OSS_REGION
+            - name: ALIYUN_OSS_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_ALIYUN_OSS_ENDPOINT
+            - name: ALIYUN_OSS_ACCESS_KEY_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_ALIYUN_OSS_ACCESS_KEY_ID
+            - name: ALIYUN_OSS_ACCESS_KEY_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_ALIYUN_OSS_ACCESS_KEY_SECRET
+            - name: ALIYUN_OSS_AUTH_VERSION
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_ALIYUN_OSS_AUTH_VERSION
+            - name: ALIYUN_OSS_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_ALIYUN_OSS_PATH
+            - name: VOLCENGINE_TOS_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_VOLCENGINE_TOS_ENDPOINT
+            - name: VOLCENGINE_TOS_ACCESS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_VOLCENGINE_TOS_ACCESS_KEY
+            - name: VOLCENGINE_TOS_SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_VOLCENGINE_TOS_SECRET_KEY
+            - name: VOLCENGINE_TOS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_VOLCENGINE_TOS_REGION
+          ports:
+            - containerPort: 5003
+              protocol: TCP
+              name: debug-port
+            - containerPort: 5002
+              protocol: TCP
+              name: service-port
+          resources:
+            limits:
+              cpu: 200m
+              memory: 1.5Gi
+            requests:
+              cpu: 100m
+              memory: 500Mi
+          volumeMounts:
+            - mountPath: /app/storage
+              name: plugin-daemon-storage
+              subPath: dify/volumes/plugin_daemon
+      volumes:
+        - name: plugin-daemon-storage
+          persistentVolumeClaim:
+            claimName: difyai-k8s
+
+
+---
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: plugin-daemon
+  namespace: difyai
+spec:
+  type: NodePort
+  selector:
+    app: plugin-daemon
+  ports:
+  - port: 5003
+    targetPort: 5003
+    protocol: TCP
+    name: debug-port
+  - port: 5002
+    targetPort: 5002
+    protocol: TCP
+    name: service-port
+
+
+---
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sandbox
+  namespace: difyai
+  labels:
+    app: sandbox
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: sandbox
+  template:
+    metadata:
+      labels:
+        app: sandbox
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: sandbox
+        image: 'docker.m.daocloud.io/langgenius/dify-sandbox:0.2.12'
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: API_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SANDBOX_API_KEY
+          - name: GIN_MODE
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SANDBOX_GIN_MODE
+          - name: WORKER_TIMEOUT
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SANDBOX_WORKER_TIMEOUT
+          - name: ENABLE_NETWORK
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SANDBOX_ENABLE_NETWORK
+          - name: HTTP_PROXY
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SANDBOX_HTTP_PROXY
+          - name: HTTPS_PROXY
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SANDBOX_HTTPS_PROXY
+          - name: SANDBOX_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SANDBOX_PORT
+          - name: PIP_MIRROR_URL
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: PIP_MIRROR_URL
+        livenessProbe:
+          exec:
+            command:
+              - "curl"
+              - "-f"
+              - "http://localhost:8194/health"
+        ports:
+          - containerPort: 8194
+        resources:
+          limits:
+            cpu: 200m
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - mountPath: /dependencies
+            name: sandbox-configmap-0
+          - mountPath: /conf
+            name: sandbox-configmap-1
+      volumes:
+        - configMap:
+            name: sandbox-configmap-0
+          name: sandbox-configmap-0
+        - configMap:
+            name: sandbox-configmap-1
+          name: sandbox-configmap-1
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sandbox
+  namespace: difyai
+spec:
+  ports:
+  - port: 8194
+    targetPort: 8194
+    protocol: TCP
+    name: sandbox-port
+  type: NodePort
+  selector:
+    app: sandbox
+
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  ssrf
+  namespace: difyai
+  labels:
+    app:  ssrf
+spec:
+  selector:
+    matchLabels:
+      app: ssrf
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  ssrf
+    spec:
+      containers:
+      - name:  ssrf
+        image:  'docker.m.daocloud.io/ubuntu/squid:latest'
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: difyai-config
+        env:
+          - name: HTTP_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SSRF_HTTP_PORT
+          - name: COREDUMP_DIR
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SSRF_COREDUMP_DIR
+          - name: REVERSE_PROXY_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SSRF_REVERSE_PROXY_PORT
+          - name: SANDBOX_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SSRF_SANDBOX_HOST
+          - name: SANDBOX_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: difyai-config
+                key: SANDBOX_PORT
+        ports:
+          - containerPort: 3128
+            name: ssrf
+        resources:
+          limits:
+            cpu: 100m
+            memory: 300Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+          - mountPath: /etc/squid/squid.conf.template
+            subPath: squid.conf.template
+            name: ssrf-proxy-configmap-0
+          - mountPath: /tmp/
+            name: ssrf-proxy-configmap-1
+        command: [ "sh", "-c", "cp /tmp/docker-entrypoint.sh /docker-entrypoint.sh && sed -i 's/\r$$//' /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh && /docker-entrypoint.sh" ]
+      volumes:
+        - configMap:
+            name: ssrf-proxy-configmap-0
+          name: ssrf-proxy-configmap-0
+        - configMap:
+            name: ssrf-proxy-configmap-1
+          name: ssrf-proxy-configmap-1
+      restartPolicy: Always
+
+
+---
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ssrf
+  namespace: difyai
+spec:
+  type: NodePort
+  selector:
+    app: ssrf
+  ports:
+  - protocol: TCP
+    port: 3128
+    targetPort: 3128
+    name: ssrf-port
+
+
+--- 
+
+
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: api
+  labels:
+    app.kubernetes.io/instance: api
+    app: api
+  namespace: difyai
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  minReadySeconds: 10
+  serviceName: api
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: 'docker.m.daocloud.io/langgenius/dify-api:1.7.0'
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: difyai-config
+          env:
+            - name: MODE
+              value: "api"
+            - name: SENTRY_DSN
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: API_SENTRY_DSN
+            - name: SENTRY_TRACES_SAMPLE_RATE
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: API_SENTRY_TRACES_SAMPLE_RATE
+            - name: SENTRY_PROFILES_SAMPLE_RATE
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: API_SENTRY_PROFILES_SAMPLE_RATE
+            - name: PLUGIN_REMOTE_INSTALL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: EXPOSE_PLUGIN_DEBUGGING_HOST
+            - name: PLUGIN_REMOTE_INSTALL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: EXPOSE_PLUGIN_DEBUGGING_PORT
+            - name: PLUGIN_MAX_PACKAGE_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_MAX_PACKAGE_SIZE
+            - name: INNER_API_KEY_FOR_PLUGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_DIFY_INNER_API_KEY
+          ports:
+            - containerPort: 5001
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1.5Gi
+            requests:
+              cpu: 100m
+              memory: 0.5Gi
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /app/api/storage
+              name: api-storage
+              subPath: dify/volumes/app/storage
+      volumes:
+        - name: api-storage
+          persistentVolumeClaim:
+            claimName: difyai-k8s
+
+
+--- 
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  namespace: difyai
+spec:
+  ports:
+  - port: 5001
+    targetPort: 5001
+    protocol: TCP
+    name: api-port
+  type: NodePort
+  selector:
+    app: api
+
+
+---
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: difyai
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: web
+        image: 'docker.m.daocloud.io/langgenius/dify-web:1.7.0'
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: difyai-config
+        env:
+        - name: SENTRY_DSN
+          valueFrom:
+            configMapKeyRef:
+              name: difyai-config
+              key: WEB_SENTRY_DSN
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: 100m
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 0.5Gi
+
+
+--- 
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: difyai
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+    name: web-port
+  type: NodePort
+  selector:
+    app: web
+
+
+--- 
+
+
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: worker
+  namespace: difyai
+  labels:
+    app: worker
+    app.kubernetes.io/instance: worker
+spec:
+  serviceName: worker
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: worker
+          image: 'docker.m.daocloud.io/langgenius/dify-api:1.7.0'
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5001
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 300m
+              memory: 1.5Gi
+            requests:
+              cpu: 100m
+              memory: 0.5Gi
+          envFrom:
+            - configMapRef:
+                name: difyai-config
+          env:
+            - name: MODE
+              value: "worker"
+            - name: SENTRY_DSN
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: API_SENTRY_DSN
+            - name: SENTRY_TRACES_SAMPLE_RATE
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: API_SENTRY_TRACES_SAMPLE_RATE
+            - name: SENTRY_PROFILES_SAMPLE_RATE
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: API_SENTRY_PROFILES_SAMPLE_RATE
+            - name: INNER_API_KEY_FOR_PLUGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: difyai-config
+                  key: PLUGIN_DIFY_INNER_API_KEY
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /app/api/storage
+              name: worker-storage
+              subPath: dify/volumes/app/storage
+      volumes:
+        - name: worker-storage
+          persistentVolumeClaim:
+            claimName: difyai-k8s
+
+
+--- 
+
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: worker
+  namespace: difyai
+spec:
+  ports:
+  - protocol: TCP
+    port: 5001
+    targetPort: 5001
+    name: worker-port
+  selector:
+    app: worker
+  type: NodePort
+
+
+---
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: difyai
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: nginx
+        image: 'docker.m.daocloud.io/library/nginx:latest'
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - configMapRef:
+              name: difyai-config
+        ports:
+          - containerPort: 80
+          - containerPort: 443
+        resources:
+          limits:
+            cpu: 100m
+            memory: 300Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+          - mountPath: /etc/nginx/nginx.conf.template
+            name: nginx-configmap-0
+            subPath: nginx.conf.template
+          - mountPath: /etc/nginx/proxy.conf.template
+            name: nginx-configmap-1
+            subPath: proxy.conf.template
+          - mountPath: /etc/nginx/https.conf.template
+            name: nginx-configmap-2
+            subPath: https.conf.template
+          - mountPath: /etc/nginx/conf.d/default.conf.template
+            subPath: default.conf.template
+            name: nginx-configmap-3
+          - mountPath: /docker-entrypoint-mount.sh
+            name: nginx-configmap-4
+            subPath: docker-entrypoint-mount.sh
+          - mountPath: /etc/ssl
+            name: nginx-configmap-5
+        command: [ "sh","-c","cp /docker-entrypoint-mount.sh /docker-entrypoint.sh && sed -i 's/\r$//' /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh && /docker-entrypoint.sh" ]
+      volumes:
+        - configMap:
+            items:
+              - key: nginx.conf.template
+                path: nginx.conf.template
+            name: nginx-configmap-0
+          name: nginx-configmap-0
+        - configMap:
+            items:
+              - key: proxy.conf.template
+                path: proxy.conf.template
+            name: nginx-configmap-1
+          name: nginx-configmap-1
+        - configMap:
+            items:
+              - key: https.conf.template
+                path: https.conf.template
+            name: nginx-configmap-2
+          name: nginx-configmap-2
+        - configMap:
+            items:
+              - key: default.conf.template
+                path: default.conf.template
+            name: nginx-configmap-3
+          name: nginx-configmap-3
+        - configMap:
+            items:
+              - key: docker-entrypoint.sh
+                path: docker-entrypoint-mount.sh
+            name: nginx-configmap-4
+          name: nginx-configmap-4
+        - configMap:
+            name: nginx-configmap-5
+          name: nginx-configmap-5
+
+
+--- 
+
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx
+  namespace: difyai
+spec:
+  selector:
+    app: nginx
+  type: NodePort
+  ports:
+  - name: nginx-port
+    port: 80
+    targetPort: 80
